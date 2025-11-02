@@ -1,3 +1,4 @@
+import Tree from "@/components/Tree";
 import {
 	Billboard,
 	type BillboardProps,
@@ -14,13 +15,13 @@ import {
 	type ThreeEvent,
 	useFrame,
 } from "@react-three/fiber";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { easing, geometry } from "maath";
 import { generate } from "random-words";
 import { type JSX, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { suspend } from "suspend-react";
-import * as THREE from "three";
 import colors from "tailwindcss/colors";
+import * as THREE from "three";
 
 export const Route = createFileRoute("/")({
 	component: App,
@@ -62,18 +63,33 @@ function Scene(props: ThreeElements["group"]) {
 	});
 
 	return (
-		<group ref={ref} {...props}>
-			<Cards
-				category="weeks"
-				from={0}
-				len={Math.PI * 2}
-				amount={12}
-				radius={5.25}
-				onPointerOver={hover}
-				onPointerOut={hover}
-			/>
-			<ActiveCard hovered={hovered} />
-		</group>
+		<>
+			<group>
+				<Text
+					font={suspend(inter).default}
+					fontSize={0.4}
+					position={[-10, 7, -10]}
+					anchorX="left"
+					color={colors.slate[200]}
+				>
+					The tree of knowledge{`\n`}Scroll and click to explore
+				</Text>
+			</group>
+			<group ref={ref} {...props}>
+				<Cards
+					category="weeks"
+					from={0}
+					len={Math.PI * 2}
+					amount={12}
+					radius={5.25}
+					rotation={scroll.offset * (Math.PI * 2)}
+					onPointerOver={hover}
+					onPointerOut={hover}
+				/>
+				<ActiveCard hovered={hovered} />
+				<Tree></Tree>
+			</group>
+		</>
 	);
 }
 
@@ -84,6 +100,7 @@ interface CardsProps extends Omit<ThreeElements["group"], "children"> {
 	len?: number;
 	amount: number;
 	radius?: number;
+	rotation?: number;
 	onPointerOver: (index: number | null) => void;
 	onPointerOut: (index: number | null) => void;
 }
@@ -94,13 +111,27 @@ function Cards({
 	len = Math.PI * 2,
 	radius = 5.25,
 	amount,
+	rotation = 0,
 	onPointerOver,
 	onPointerOut,
 	...props
 }: CardsProps) {
 	const [hovered, hover] = useState<number | null>(null);
 	const textPosition = from + (amount / 2 / amount) * len;
+	const [currentRotation, setCurrentRotation] = useState(rotation);
+	const scroll = useScroll();
+	const cardTolerance = len / (2 * amount);
+	const navigate = useNavigate();
+	useFrame(() => {
+		// Calculate the rotation based on scroll, same as what was passed from Scene
+		const newRotation = scroll.offset * (Math.PI * 2);
 
+		// This check avoids infinite re-renders if the value is the same.
+		// For the focused calculation, a small tolerance might be needed.
+		if (Math.abs(newRotation - currentRotation) > 0.0001) {
+			setCurrentRotation(newRotation);
+		}
+	});
 	return (
 		<group {...props}>
 			<Billboard
@@ -132,7 +163,14 @@ function Cards({
 						rotation={[0, Math.PI / 2 + angle, 0]}
 						active={hovered !== null}
 						hovered={hovered === i}
+						// focused when rotation between angle - len/(2*amount) and angle +
+						// len/(2*amount)
+						focused={
+							currentRotation >= angle - cardTolerance &&
+							currentRotation <= angle + cardTolerance
+						}
 						url={`/img${Math.floor(i % 10) + 1}.jpg`}
+						onClick={() => navigate({ to: `/weeks/${i + 1}` })}
 					/>
 				);
 			})}
@@ -147,14 +185,18 @@ interface CardProps extends GroupProps {
 	url: string;
 	active: boolean;
 	hovered: boolean;
+	focused: boolean;
 }
 
-function Card({ url, active, hovered, ...props }: CardProps) {
+function Card({ url, active, hovered, focused, ...props }: CardProps) {
 	const ref = useRef<THREE.Mesh>(null); // Ref to the <Image> component (which is a Mesh)
 
 	useFrame((state: RootState, delta: number) => {
 		if (ref.current) {
 			const f = hovered ? 1.4 : active ? 1.25 : 1;
+			// rotate to face the front if hovered
+			const targetRotationY = focused ? 0.5 * Math.PI : 0;
+			easing.damp(ref.current.rotation, "y", targetRotationY, 0.1, delta);
 			easing.damp3(
 				ref.current.position,
 				[0, hovered ? 0.25 : 0, 0],
@@ -222,7 +264,7 @@ function ActiveCard({ hovered, ...props }: ActiveCardProps) {
 				anchorX="left"
 				color={colors.slate[50]}
 			>
-				{hovered !== null && `${name}\n${hovered}`}
+				{hovered !== null && `${name}\n${hovered + 1}`}
 			</Text>
 			<Image
 				ref={ref}
