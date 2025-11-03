@@ -9,9 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TreeRouteImport } from './routes/tree'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as Weeks1RouteImport } from './routes/weeks/1'
 
+const TreeRoute = TreeRouteImport.update({
+  id: '/tree',
+  path: '/tree',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -25,32 +31,43 @@ const Weeks1Route = Weeks1RouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/tree': typeof TreeRoute
   '/weeks/1': typeof Weeks1Route
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/tree': typeof TreeRoute
   '/weeks/1': typeof Weeks1Route
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/tree': typeof TreeRoute
   '/weeks/1': typeof Weeks1Route
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/weeks/1'
+  fullPaths: '/' | '/tree' | '/weeks/1'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/weeks/1'
-  id: '__root__' | '/' | '/weeks/1'
+  to: '/' | '/tree' | '/weeks/1'
+  id: '__root__' | '/' | '/tree' | '/weeks/1'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  TreeRoute: typeof TreeRoute
   Weeks1Route: typeof Weeks1Route
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tree': {
+      id: '/tree'
+      path: '/tree'
+      fullPath: '/tree'
+      preLoaderRoute: typeof TreeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -70,8 +87,18 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  TreeRoute: TreeRoute,
   Weeks1Route: Weeks1Route,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
