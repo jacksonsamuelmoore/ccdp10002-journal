@@ -15,14 +15,24 @@ function App(): JSX.Element {
 					<br />
 					Sit. Have a break from marking for a moment.
 					<br />
-					If you're ready, please feel free to explore the tree of my knowledge
+					If you're ready, please feel free to explore the tree of my leanring
 					from this semester.
 					<br />
 					<br />I started this tree as usual, adding knowledge, joining dots,
-					and creating the networks that allow understanding. But as sometimes happens,
-					things slowly unraveled somewhat.
+					and creating the networks that allow understanding. But as sometimes
+					happens, things slowly unraveled somewhat.
 					<br />
-					Please enjoy twelve weeks of me slowly driving myself mental. <br />
+					<br />
+					Please enjoy twelve weeks of me slowly driving myself mental. I've
+					built this website from scratch to give a peek inside my head. Source
+					code is available{" "}
+					<a
+						href="https://github.com/jacksonsamuelmoore/ccdp10002-journal"
+						className="underline"
+					>
+						here.
+					</a>
+					<br />
 					<br />
 					&mdash; Jackson Moore
 					<br />
