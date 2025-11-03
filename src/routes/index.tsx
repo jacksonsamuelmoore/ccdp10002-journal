@@ -21,29 +21,15 @@ function App(): JSX.Element {
 					<br />I started this tree as usual, adding knowledge, joining dots,
 					and creating the networks that allow understanding.
 					<br />
-					But something stuck out. A node that didn't connect cleanly, one core
-					to the meaning conveyed.
-					<br />
-					So you may notice some entries focus somewhat more on a new set of
-					questions:
-					<br />
-					<br />
-					<b>
-						Who is [DAVID SHEA]? What does [HE] believe? And Why does [HE]
-						believe it?
-					</b>
-					<br />
-					<br />
-					Please enjoy twelve weeks of me slowly driving myself mental. And if
-					if you see a loose node floating around, ........
-					<br />
+					Please enjoy twelve weeks of me slowly driving myself mental. <br />
 					<br />
 					&mdash; Jackson Moore
 					<br />
 					<br />
 					<i>
-						Note: This site is meant to be experienced on desktop, with a display
-						aspect ration close to 16:9. Please don't view on a phone thank you!
+						Note: This site is meant to be experienced on desktop, with a
+						display aspect ration close to 16:9 and sound on. Please don't view on a phone
+						thank you!
 					</i>
 				</p>
 				<div className="flex flex-row mt-8 gap-4">
@@ -51,7 +37,7 @@ function App(): JSX.Element {
 						to="/tree"
 						className="px-4 py-2 bg-slate-700 rounded hover:bg-slate-600"
 						type="button"
-            viewTransition
+						viewTransition
 					>
 						I'm ready to continue
 					</Link>
