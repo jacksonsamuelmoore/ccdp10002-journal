@@ -3,18 +3,16 @@ import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import { resolve } from "node:path";
-import { nitro } from "nitro/vite";
+import { nitroV2Plugin } from '@tanstack/nitro-v2-vite-plugin'
 
 // https://vitejs.dev/config/
 export default defineConfig({
 	plugins: [
 		tanstackStart(),
-		nitro(
-			/*
+    nitroV2Plugin(/*
       // nitro config goes here, e.g.
-      { config: { preset: 'node-server' } }
-    */
-		),
+      { preset: 'node-server' }
+    */),
 		viteReact(),
 		tailwindcss(),
 	],
