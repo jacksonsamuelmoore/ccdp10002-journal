@@ -19,7 +19,8 @@ function App(): JSX.Element {
 					from this semester.
 					<br />
 					<br />I started this tree as usual, adding knowledge, joining dots,
-					and creating the networks that allow understanding.
+					and creating the networks that allow understanding. But as sometimes happens,
+					things slowly unraveled somewhat.
 					<br />
 					Please enjoy twelve weeks of me slowly driving myself mental. <br />
 					<br />
@@ -28,8 +29,8 @@ function App(): JSX.Element {
 					<br />
 					<i>
 						Note: This site is meant to be experienced on desktop, with a
-						display aspect ration close to 16:9 and sound on. Please don't view on a phone
-						thank you!
+						display aspect ration close to 16:9 and sound on. Please don't view
+						on a phone thank you!
 					</i>
 				</p>
 				<div className="flex flex-row mt-8 gap-4">
