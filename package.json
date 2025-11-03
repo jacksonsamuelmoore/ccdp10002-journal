@@ -18,11 +18,12 @@
     "@react-three/fiber": "^9.3.0",
     "@tailwindcss/vite": "^4.0.6",
     "@tanstack/react-devtools": "^0.2.2",
-    "@tanstack/react-router": "^1.130.2",
+    "@tanstack/react-router": "^1.134.9",
     "@tanstack/react-router-devtools": "^1.131.5",
+    "@tanstack/react-start": "^1.134.9",
     "@tanstack/router-plugin": "^1.121.2",
-    "drei": "^2.2.21",
     "maath": "^0.10.8",
+    "nitro": "^3.0.1-alpha.0",
     "random-words": "^2.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -30,7 +31,6 @@
     "three": "^0.180.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
     "@types/react": "^19.0.8",
@@ -39,7 +39,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "jsdom": "^26.0.0",
     "typescript": "^5.7.2",
-    "vite": "^6.3.5",
+    "vite": "^7.1.12",
     "vitest": "^3.0.5",
     "web-vitals": "^4.2.4"
   }
