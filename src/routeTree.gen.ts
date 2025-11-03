@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TreeRouteImport } from './routes/tree'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as Weeks2RouteImport } from './routes/weeks/2'
 import { Route as Weeks1RouteImport } from './routes/weeks/1'
 
 const TreeRoute = TreeRouteImport.update({
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Weeks2Route = Weeks2RouteImport.update({
+  id: '/weeks/2',
+  path: '/weeks/2',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Weeks1Route = Weeks1RouteImport.update({
   id: '/weeks/1',
   path: '/weeks/1',
@@ -33,30 +39,34 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/tree': typeof TreeRoute
   '/weeks/1': typeof Weeks1Route
+  '/weeks/2': typeof Weeks2Route
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/tree': typeof TreeRoute
   '/weeks/1': typeof Weeks1Route
+  '/weeks/2': typeof Weeks2Route
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/tree': typeof TreeRoute
   '/weeks/1': typeof Weeks1Route
+  '/weeks/2': typeof Weeks2Route
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/tree' | '/weeks/1'
+  fullPaths: '/' | '/tree' | '/weeks/1' | '/weeks/2'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/tree' | '/weeks/1'
-  id: '__root__' | '/' | '/tree' | '/weeks/1'
+  to: '/' | '/tree' | '/weeks/1' | '/weeks/2'
+  id: '__root__' | '/' | '/tree' | '/weeks/1' | '/weeks/2'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   TreeRoute: typeof TreeRoute
   Weeks1Route: typeof Weeks1Route
+  Weeks2Route: typeof Weeks2Route
 }
 
 declare module '@tanstack/react-router' {
@@ -75,6 +85,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/weeks/2': {
+      id: '/weeks/2'
+      path: '/weeks/2'
+      fullPath: '/weeks/2'
+      preLoaderRoute: typeof Weeks2RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/weeks/1': {
       id: '/weeks/1'
       path: '/weeks/1'
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   TreeRoute: TreeRoute,
   Weeks1Route: Weeks1Route,
+  Weeks2Route: Weeks2Route,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

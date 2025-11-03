@@ -17,25 +17,39 @@ import {
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { easing, geometry } from "maath";
 import { generate } from "random-words";
-import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { suspend } from "suspend-react";
 import colors from "tailwindcss/colors";
 import * as THREE from "three";
 import SpinningModel from "@/components/SpinningModel";
 
 const models = [
+	"hat.obj",
+	"witness.obj",
+	"gears.obj",
+	"tower.obj",
+	"camera.obj",
+	"pendulum.obj",
+	"bowl.obj",
+	"speaker.obj",
 	"cube.obj",
-	"teapot.obj",
-	"cube.obj",
-	"cube.obj",
-	"cube.obj",
-	"cube.obj",
-	"cube.obj",
-	"cube.obj",
-	"cube.obj",
-	"cube.obj",
-	"cube.obj",
-	"cube.obj",
+	"bee.obj",
+	"poker.obj",
+	"mirror.obj",
+];
+const names = [
+	"back to basics",
+	"eyes arent for seeing",
+	"age of machines",
+	"perspective",
+	"through the looking glass",
+	"chaoticn't",
+	"bowls",
+	"what do i sound like",
+	"thinking about nothing",
+	"according to all known laws of aviation",
+	"lets go gambling",
+	"reflections",
 ];
 
 extend(geometry);
@@ -48,12 +62,27 @@ export const Route = createFileRoute("/tree")({
 
 function RouteComponent() {
 	return (
-		<div className="w-[100vw] h-[100vh] bg-slate-900">
-			<Canvas dpr={[1, 1.5]}>
-				<ScrollControls pages={4} infinite>
-					<Scene position={[0, 1.5, 0]} />
-				</ScrollControls>
-			</Canvas>
+		<div className="w-[100vw] h-[100vh] bg-slate-900 relative">
+			<Suspense fallback={<Loader />}>
+				<Canvas dpr={[1, 1.5]}>
+					<ScrollControls pages={4} infinite>
+						<Scene
+							position={[0, 1.5, 0]}
+						/>
+					</ScrollControls>
+				</Canvas>
+			</Suspense>
+		</div>
+	);
+}
+
+function Loader() {
+	return (
+		<div className="absolute inset-0 flex items-center justify-center z-10 bg-slate-900">
+			<div className="text-center">
+				<div className="w-16 h-16 border-4 border-slate-600 border-t-slate-200 rounded-full animate-spin mx-auto mb-4"></div>
+				<p className="text-slate-200 text-lg">Loading experience...</p>
+			</div>
 		</div>
 	);
 }
@@ -102,7 +131,6 @@ function Scene(props: ThreeElements["group"]) {
 					onPointerOver={hover}
 					onPointerOut={hover}
 				/>
-				<ActiveCard hovered={hovered} />
 			</group>
 		</>
 	);
@@ -168,6 +196,7 @@ function Cards({
 			{Array.from({ length: amount }, (_, i) => {
 				const angle = from + (i / amount) * len;
 				const model = models[i % models.length];
+				const name = names[i % names.length];
 				const focused =
 					currentRotation >= angle - cardTolerance &&
 					currentRotation <= angle + cardTolerance;
@@ -184,7 +213,7 @@ function Cards({
 							active={hovered !== null}
 							hovered={hovered === i}
 							focused={focused}
-							url={`/img${Math.floor(i % 10) + 1}.jpg`}
+							url={`/img${Math.floor(i % 12) + 1}.jpg`}
 							onClick={() => navigate({ to: `/weeks/${i + 1}` })}
 						/>
 						<SpinningModel
@@ -192,6 +221,17 @@ function Cards({
 							url={`/models/${model}`}
 							scale={focused ? 3 : 0}
 						></SpinningModel>
+						<Billboard>
+							<Text
+								font={suspend(inter).default}
+								fontSize={0.5}
+								position={[-1.5, 3, 0]}
+								anchorX="left"
+								color={colors.slate[50]}
+							>
+								{hovered === i && `${name}\n${hovered + 1}`}
+							</Text>
+						</Billboard>
 					</>
 				);
 			})}
@@ -216,7 +256,7 @@ function Card({ url, active, hovered, focused, ...props }: CardProps) {
 		if (ref.current) {
 			const f = hovered ? 1.4 : active ? 1.25 : 1;
 			// rotate to face the front if hovered
-			const targetRotationY = focused ? 0.5 * Math.PI : 0;
+			const targetRotationY = focused ? -0.5 * Math.PI : 0;
 			easing.damp(ref.current.rotation, "y", targetRotationY, 0.1, delta);
 			easing.damp3(
 				ref.current.position,
@@ -239,62 +279,5 @@ function Card({ url, active, hovered, focused, ...props }: CardProps) {
 				side={THREE.DoubleSide}
 			/>
 		</group>
-	);
-}
-
-// Define the type for the <Image> material properties we animate
-type ImageMaterialType = THREE.ShaderMaterial & {
-	zoom: number;
-	opacity: number;
-};
-
-// Props interface for the ActiveCard component
-interface ActiveCardProps extends BillboardProps {
-	hovered: number | null;
-}
-
-function ActiveCard({ hovered, ...props }: ActiveCardProps) {
-	const ref = useRef<THREE.Mesh<THREE.BufferGeometry, ImageMaterialType>>(null);
-	const name = useMemo(() => generate({ exactly: 2 }).join(" "), [hovered]);
-
-	useLayoutEffect(() => {
-		if (ref.current) {
-			ref.current.material.zoom = 0.8;
-		}
-	}, [hovered]);
-
-	useFrame((state: RootState, delta: number) => {
-		if (ref.current) {
-			easing.damp(ref.current.material, "zoom", 1, 0.5, delta);
-			easing.damp(
-				ref.current.material,
-				"opacity",
-				hovered !== null ? 1 : 0,
-				0.3,
-				delta,
-			);
-		}
-	});
-
-	return (
-		<Billboard {...props}>
-			<Text
-				font={suspend(inter).default}
-				fontSize={0.5}
-				position={[2.15, 3.85, 0]}
-				anchorX="left"
-				color={colors.slate[50]}
-			>
-				{hovered !== null && `${name}\n${hovered + 1}`}
-			</Text>
-			<Image
-				ref={ref}
-				transparent
-				radius={0.3}
-				position={[0, 1.5, 0]}
-				scale={[3.5, 1.618 * 3.5, 0.2, 1]}
-				url={`/img${Math.floor((hovered ?? 0) % 10) + 1}.jpg`}
-			/>
-		</Billboard>
 	);
 }

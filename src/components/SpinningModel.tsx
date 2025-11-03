@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState, useMemo } from "react";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 import * as THREE from "three";
+import colors from "tailwindcss/colors";
 interface SpinningModelProps {
 	url: string;
 }
@@ -83,7 +84,7 @@ export default function SpinningModel({ url, scale }: ModelProps) {
 		<group ref={meshRef} visible={currentScale.current > 0.05}>
 			{wireframeGeometries.map((geometry, index) => (
 				<lineSegments key={index} geometry={geometry}>
-					<lineBasicMaterial color="#00ff00" />
+					<lineBasicMaterial color="#93c5fd" />
 				</lineSegments>
 			))}
 		</group>
