@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TreeRouteImport } from './routes/tree'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as Weeks9RouteImport } from './routes/weeks/9'
 import { Route as Weeks6RouteImport } from './routes/weeks/6'
 import { Route as Weeks4RouteImport } from './routes/weeks/4'
 import { Route as Weeks2RouteImport } from './routes/weeks/2'
@@ -26,6 +27,11 @@ const TreeRoute = TreeRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Weeks9Route = Weeks9RouteImport.update({
+  id: '/weeks/9',
+  path: '/weeks/9',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Weeks6Route = Weeks6RouteImport.update({
@@ -68,6 +74,7 @@ export interface FileRoutesByFullPath {
   '/weeks/2': typeof Weeks2Route
   '/weeks/4': typeof Weeks4Route
   '/weeks/6': typeof Weeks6Route
+  '/weeks/9': typeof Weeks9Route
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByTo {
   '/weeks/2': typeof Weeks2Route
   '/weeks/4': typeof Weeks4Route
   '/weeks/6': typeof Weeks6Route
+  '/weeks/9': typeof Weeks9Route
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +97,7 @@ export interface FileRoutesById {
   '/weeks/2': typeof Weeks2Route
   '/weeks/4': typeof Weeks4Route
   '/weeks/6': typeof Weeks6Route
+  '/weeks/9': typeof Weeks9Route
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +110,7 @@ export interface FileRouteTypes {
     | '/weeks/2'
     | '/weeks/4'
     | '/weeks/6'
+    | '/weeks/9'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,6 +121,7 @@ export interface FileRouteTypes {
     | '/weeks/2'
     | '/weeks/4'
     | '/weeks/6'
+    | '/weeks/9'
   id:
     | '__root__'
     | '/'
@@ -121,6 +132,7 @@ export interface FileRouteTypes {
     | '/weeks/2'
     | '/weeks/4'
     | '/weeks/6'
+    | '/weeks/9'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -132,6 +144,7 @@ export interface RootRouteChildren {
   Weeks2Route: typeof Weeks2Route
   Weeks4Route: typeof Weeks4Route
   Weeks6Route: typeof Weeks6Route
+  Weeks9Route: typeof Weeks9Route
 }
 
 declare module '@tanstack/react-router' {
@@ -148,6 +161,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/weeks/9': {
+      id: '/weeks/9'
+      path: '/weeks/9'
+      fullPath: '/weeks/9'
+      preLoaderRoute: typeof Weeks9RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/weeks/6': {
@@ -204,6 +224,7 @@ const rootRouteChildren: RootRouteChildren = {
   Weeks2Route: Weeks2Route,
   Weeks4Route: Weeks4Route,
   Weeks6Route: Weeks6Route,
+  Weeks9Route: Weeks9Route,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
