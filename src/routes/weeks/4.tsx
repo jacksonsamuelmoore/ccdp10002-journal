@@ -23,6 +23,23 @@ function RouteComponent() {
 					time french people had ever seen france from that height. That the
 					change in perspective was a contributing factor in the 20th century
 					idology of power over the world and absolute correctness.
+					<br />
+					<br />
+					And... I can see where they're coming from. The idea of technological
+					solutions solving our problems is really alluring. That we can just
+					get better, that we will just get better as a species and that our
+					issue will go a way is a comforting idea. But it only allows us to
+					obscure and avoid the reality. That we need to accept the
+					incerconnected nature of our world, and stive to understand it as a
+					whole, so we can work in harmony. We tried the 20th century approach
+					with climate change and poverty, and while the solutions we've made
+					are ok, but not enough. We still will have to sacrifice more if we
+					want to solve our problems.
+					<br />
+					<br />I think it's important to reach for the stars and to be better,
+					but when we stand on a monument like this to remember that we're not
+					above the world but just as much a part of it as those people on the
+					ground.
 				</p>
 			</div>
 			<iframe

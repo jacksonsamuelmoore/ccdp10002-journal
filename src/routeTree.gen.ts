@@ -11,8 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TreeRouteImport } from './routes/tree'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as Weeks6RouteImport } from './routes/weeks/6'
 import { Route as Weeks4RouteImport } from './routes/weeks/4'
 import { Route as Weeks2RouteImport } from './routes/weeks/2'
+import { Route as Weeks12RouteImport } from './routes/weeks/12'
 import { Route as Weeks11RouteImport } from './routes/weeks/11'
 import { Route as Weeks1RouteImport } from './routes/weeks/1'
 
@@ -26,6 +28,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Weeks6Route = Weeks6RouteImport.update({
+  id: '/weeks/6',
+  path: '/weeks/6',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Weeks4Route = Weeks4RouteImport.update({
   id: '/weeks/4',
   path: '/weeks/4',
@@ -34,6 +41,11 @@ const Weeks4Route = Weeks4RouteImport.update({
 const Weeks2Route = Weeks2RouteImport.update({
   id: '/weeks/2',
   path: '/weeks/2',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Weeks12Route = Weeks12RouteImport.update({
+  id: '/weeks/12',
+  path: '/weeks/12',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Weeks11Route = Weeks11RouteImport.update({
@@ -52,16 +64,20 @@ export interface FileRoutesByFullPath {
   '/tree': typeof TreeRoute
   '/weeks/1': typeof Weeks1Route
   '/weeks/11': typeof Weeks11Route
+  '/weeks/12': typeof Weeks12Route
   '/weeks/2': typeof Weeks2Route
   '/weeks/4': typeof Weeks4Route
+  '/weeks/6': typeof Weeks6Route
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/tree': typeof TreeRoute
   '/weeks/1': typeof Weeks1Route
   '/weeks/11': typeof Weeks11Route
+  '/weeks/12': typeof Weeks12Route
   '/weeks/2': typeof Weeks2Route
   '/weeks/4': typeof Weeks4Route
+  '/weeks/6': typeof Weeks6Route
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -69,22 +85,42 @@ export interface FileRoutesById {
   '/tree': typeof TreeRoute
   '/weeks/1': typeof Weeks1Route
   '/weeks/11': typeof Weeks11Route
+  '/weeks/12': typeof Weeks12Route
   '/weeks/2': typeof Weeks2Route
   '/weeks/4': typeof Weeks4Route
+  '/weeks/6': typeof Weeks6Route
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/tree' | '/weeks/1' | '/weeks/11' | '/weeks/2' | '/weeks/4'
+  fullPaths:
+    | '/'
+    | '/tree'
+    | '/weeks/1'
+    | '/weeks/11'
+    | '/weeks/12'
+    | '/weeks/2'
+    | '/weeks/4'
+    | '/weeks/6'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/tree' | '/weeks/1' | '/weeks/11' | '/weeks/2' | '/weeks/4'
+  to:
+    | '/'
+    | '/tree'
+    | '/weeks/1'
+    | '/weeks/11'
+    | '/weeks/12'
+    | '/weeks/2'
+    | '/weeks/4'
+    | '/weeks/6'
   id:
     | '__root__'
     | '/'
     | '/tree'
     | '/weeks/1'
     | '/weeks/11'
+    | '/weeks/12'
     | '/weeks/2'
     | '/weeks/4'
+    | '/weeks/6'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -92,8 +128,10 @@ export interface RootRouteChildren {
   TreeRoute: typeof TreeRoute
   Weeks1Route: typeof Weeks1Route
   Weeks11Route: typeof Weeks11Route
+  Weeks12Route: typeof Weeks12Route
   Weeks2Route: typeof Weeks2Route
   Weeks4Route: typeof Weeks4Route
+  Weeks6Route: typeof Weeks6Route
 }
 
 declare module '@tanstack/react-router' {
@@ -112,6 +150,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/weeks/6': {
+      id: '/weeks/6'
+      path: '/weeks/6'
+      fullPath: '/weeks/6'
+      preLoaderRoute: typeof Weeks6RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/weeks/4': {
       id: '/weeks/4'
       path: '/weeks/4'
@@ -124,6 +169,13 @@ declare module '@tanstack/react-router' {
       path: '/weeks/2'
       fullPath: '/weeks/2'
       preLoaderRoute: typeof Weeks2RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/weeks/12': {
+      id: '/weeks/12'
+      path: '/weeks/12'
+      fullPath: '/weeks/12'
+      preLoaderRoute: typeof Weeks12RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/weeks/11': {
@@ -148,8 +200,10 @@ const rootRouteChildren: RootRouteChildren = {
   TreeRoute: TreeRoute,
   Weeks1Route: Weeks1Route,
   Weeks11Route: Weeks11Route,
+  Weeks12Route: Weeks12Route,
   Weeks2Route: Weeks2Route,
   Weeks4Route: Weeks4Route,
+  Weeks6Route: Weeks6Route,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
